@@ -88,7 +88,7 @@ export default function Highlighter ({
     ...rest,
     children: chunks.map((chunk, index) => {
       const text = textToHighlight.substr(chunk.start, chunk.end - chunk.start)
-
+      
       if (chunk.highlight) {
         highlightIndex++
 
@@ -112,7 +112,7 @@ export default function Highlighter ({
           : highlightStyle
 
         const props = {
-          children: text,
+          children: createElement('span', { dangerouslySetInnerHTML: { __html: text } }),
           className: highlightClassNames,
           key: index,
           style: highlightStyles
@@ -126,12 +126,13 @@ export default function Highlighter ({
 
         return createElement(HighlightTag, props)
       } else {
-        return createElement(unhighlightTag, {
-          children: text,
+        const props = {
+          children: createElement('span', { dangerouslySetInnerHTML: { __html: text } }),
           className: unhighlightClassName,
           key: index,
           style: unhighlightStyle
-        })
+        }
+        return createElement(unhighlightTag, props)
       }
     })
   })

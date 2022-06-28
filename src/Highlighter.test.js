@@ -50,7 +50,7 @@ describe('Highlighter', () => {
         />
       </div>
     )
-
+    
     return node.children[0]
   }
 
@@ -428,5 +428,19 @@ describe('Highlighter', () => {
     })
     const matches = node.querySelectorAll(UNHIGHLIGHT_QUERY_SELECTOR)
     expect(matches[0].tagName).to.equal('A')
+  })
+
+  it('rendering a line break', () => {
+    const emptyValues = [[], ['']]
+    emptyValues.forEach((emptyValue) => {
+      const node = getHighlighterChildren({
+        searchWords: emptyValue,
+        textToHighlight: 'This is</br> text'
+      })
+      expect(node.innerHTML).to.equal('<span class="customUnhighlightClass"><span>This is<br> text</span></span>')
+      expect(node.children.length).to.equal(1)
+      expect(node.querySelectorAll(HIGHLIGHT_QUERY_SELECTOR).length).to.equal(0)
+      expect(node.textContent).to.eql('This is text')
+    })
   })
 })
